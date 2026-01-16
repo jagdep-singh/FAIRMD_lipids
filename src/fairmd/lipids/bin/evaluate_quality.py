@@ -25,6 +25,29 @@ from fairmd.lipids import FMDL_EXP_PATH, FMDL_SIMU_PATH
 from fairmd.lipids.auxiliary.jsonEncoders import CompactJSONEncoder
 
 
+def round_quality_values(obj, ndigits=4):
+    stack = [obj]
+
+    while stack:
+        current = stack.pop()
+
+        if isinstance(current, dict):
+            for k, v in current.items():
+                if isinstance(v, float):
+                    current[k] = round(v, ndigits)
+                elif isinstance(v, (dict, list)):
+                    stack.append(v)
+
+        elif isinstance(current, list):
+            for i, v in enumerate(current):
+                if isinstance(v, float):
+                    current[i] = round(v, ndigits)
+                elif isinstance(v, (dict, list)):
+                    stack.append(v)
+
+    return obj
+
+
 def evaluate_quality():
     simulations = qq.load_simulation_qe()
 
@@ -130,12 +153,15 @@ def evaluate_quality():
                     FGout = True
             if FGout:
                 # write fragment qualities into a file for a molecule
+                round_quality_values(fragment_quality_output)
+
                 with open(fragment_quality_file, "w") as f:
                     json.dump(fragment_quality_output, f)
 
             # write into the OrderParameters_quality.json quality data file
             outfile1 = os.path.join(DATAdir, lipid1 + "_OrderParameters_quality.json")
             try:
+                round_quality_values(data_dict)
                 with open(outfile1, "w") as f:
                     json.dump(data_dict, f, cls=CompactJSONEncoder)
             except Exception:
@@ -145,11 +171,17 @@ def evaluate_quality():
         # make system quality file
 
         outfile2 = os.path.join(DATAdir, "SYSTEM_quality.json")
-        SQout = False
-        for SQ in system_qual_output:
-            if system_qual_output[SQ] > 0:
-                SQout = True
+        # SQout = False
+        # for SQ in system_qual_output:
+        #     if system_qual_output[SQ] > 0:
+        #         SQout = True
+        SQout = any(
+                isinstance(v, float) and not np.isnan(v) and v > 0
+                for v in system_qual_output.values()
+            )
+
         if SQout:
+            round_quality_values(system_qual_output)
             with open(outfile2, "w") as f:
                 json.dump(system_qual_output, f)
             print("Order parameter quality evaluated for " + simulation.idx_path)
@@ -188,6 +220,7 @@ def evaluate_quality():
 
             print("Form factor quality evaluated for ", DATAdir)
             outfile3 = os.path.join(DATAdir, "FormFactorQuality.json")
+            round_quality_values(results_ff[best_ep])
             with open(outfile3, "w") as f:
                 json.dump(results_ff[best_ep], f)
             evaluated_ff_counter += 1
