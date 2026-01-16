@@ -175,10 +175,7 @@ def evaluate_quality():
         # for SQ in system_qual_output:
         #     if system_qual_output[SQ] > 0:
         #         SQout = True
-        SQout = any(
-                isinstance(v, float) and not np.isnan(v) and v > 0
-                for v in system_qual_output.values()
-            )
+        SQout = any(isinstance(v, float) and not np.isnan(v) and v > 0 for v in system_qual_output.values())
 
         if SQout:
             round_quality_values(system_qual_output)
