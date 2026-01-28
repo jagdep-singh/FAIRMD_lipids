@@ -17,6 +17,7 @@ No arguments are needed.
 TODO: check if EXPERIMENT section changed and trigger the action!
 """
 
+import sys
 import logging
 import os
 from typing import IO
@@ -138,7 +139,7 @@ def load_experiments(exp_type: str, all_experiments: ExperimentCollection) -> li
 
 def find_pairs_and_change_sims(experiments: list[Experiment], simulations: list[SearchSystem]):
     pairs = []
-    for simulation in tqdm(simulations, desc="Simulation"):
+    for simulation in tqdm(simulations, desc="Simulation", disable=not sys.stdout.isatty()):
         sim_lipids = simulation.get_lipids()
         sim_total_lipid_concentration = simulation.total_lipid_conc()
         sim_ions = simulation.get_ions(ions_list)
@@ -293,7 +294,7 @@ def match_experiments() -> None:
         log_pairs(pairs_ff, logf)
 
     # save changed simulations
-    for simulation in tqdm(simulations, "Saving READMEs"):
+    for simulation in tqdm(simulations, desc="Simulation", disable=not sys.stdout.isatty()):
         outfile_dict = os.path.join(FMDL_SIMU_PATH, simulation.idx_path, "README.yaml")
         with open(outfile_dict, "w") as f:
             if "path" in simulation.system:

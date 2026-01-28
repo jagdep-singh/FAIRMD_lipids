@@ -172,7 +172,7 @@ def computeAPL(  # noqa: N802 (API)
         # in the databank
         apl = {}
         nlipids = system.n_lipids
-        for _ts in tqdm(u.trajectory, desc="Scanning the trajectory"):
+        for _ts in tqdm(u.trajectory, desc="Scanning the trajectory", disable=not sys.stdout.isatty()):
             if u.trajectory.time >= system["TIMELEFTOUT"] * 1000:
                 dims = u.dimensions
                 apl_frame = dims[0] * dims[1] * 2 / nlipids
