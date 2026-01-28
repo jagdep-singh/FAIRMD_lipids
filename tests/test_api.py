@@ -26,7 +26,7 @@ pytestmark = [pytest.mark.sim2, pytest.mark.min]
 # for vector comparisons with np.testing.assert_allclose
 MAXRELERR_COMPARE_THRESHOLD = 1e-2
 # testable constants
-N_SYSTEMS_IN_TESTSET = 5
+N_SYSTEMS_IN_TESTSET = 6
 
 
 @pytest.fixture(scope="module")
@@ -402,7 +402,7 @@ def test_run_analysis_interface():
         id_range=(None, None),
     )
 
-    check.is_in("COMPUTED: 5", log_stream.getvalue())
+    check.is_in(f"COMPUTED: {N_SYSTEMS_IN_TESTSET}", log_stream.getvalue())
     check.is_in("SKIPPED: 0", log_stream.getvalue())
 
     run_analysis(
