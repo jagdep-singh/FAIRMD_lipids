@@ -6,6 +6,7 @@ Input/Output module with some small usefull functions. It includes:
 - Resolving URLs.
 - Calculating file hash for fingerprinting.
 """
+
 import sys
 import hashlib
 import logging
@@ -132,6 +133,7 @@ def download_with_progress_with_retry(
         def __init__(self, *args, **kwargs):
             kwargs.setdefault("disable", not sys.stdout.isatty())
             super().__init__(*args, **kwargs)
+
         def update_retrieve(self, b=1, bsize=1, tsize=None):
             if tsize is not None:
                 self.total = tsize

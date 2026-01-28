@@ -294,7 +294,7 @@ def match_experiments() -> None:
         log_pairs(pairs_ff, logf)
 
     # save changed simulations
-    for simulation in tqdm(simulations, desc="Simulation", disable=not sys.stdout.isatty()):
+    for simulation in tqdm(simulations, desc="Saving READMEs", disable=not sys.stdout.isatty()):
         outfile_dict = os.path.join(FMDL_SIMU_PATH, simulation.idx_path, "README.yaml")
         with open(outfile_dict, "w") as f:
             if "path" in simulation.system:

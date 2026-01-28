@@ -6,6 +6,7 @@ from a MD trajectory
 - Made by Joe,  Last edit 2017/02/02
 - Refactored for performance by Gemini
 """
+
 import sys
 import re
 import warnings
@@ -177,7 +178,7 @@ def _read_trajs_calc_OPs(
         op.traj = np.zeros(n_res, dtype=np.float64)
 
     print("Processing trajectory with optimized single-core engine...")
-    for _ in tqdm(mol.trajectory, total=n_frames, unit="frame" , disable=not sys.stdout.isatty()):
+    for _ in tqdm(mol.trajectory, total=n_frames, unit="frame", disable=not sys.stdout.isatty()):
         for op in op_obj_list:
             if op.atomgroup is None or len(op.atomgroup) == 0:
                 continue
