@@ -6,7 +6,7 @@ Input/Output module with some small usefull functions. It includes:
 - Resolving URLs.
 - Calculating file hash for fingerprinting.
 """
-
+import sys
 import hashlib
 import logging
 import math
@@ -113,6 +113,9 @@ def download_with_progress_with_retry(
     """
 
     class RetrieveProgressBar(tqdm):
+        def __init__(self, *args, **kwargs):
+            kwargs.setdefault("disable", not sys.stdout.isatty())
+            super().__init__(*args, **kwargs)
         def update_retrieve(self, b=1, bsize=1, tsize=None):
             if tsize is not None:
                 self.total = tsize
@@ -294,7 +297,7 @@ def calc_file_sha1_hash(fi: str, step: int = 67108864, *, one_block: bool = True
             block = f.read(step)
             sha1_hash.update(block)
         else:
-            with tqdm(total=n_tot_steps, desc="Calculating SHA1") as pbar:
+            with tqdm(total=n_tot_steps, desc="Calculating SHA1", disable=not sys.stdout.isatty()) as pbar:
                 for byte_block in iter(lambda: f.read(step), b""):
                     sha1_hash.update(byte_block)
                     pbar.update(1)
