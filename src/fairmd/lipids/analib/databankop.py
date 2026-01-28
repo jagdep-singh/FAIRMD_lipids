@@ -7,8 +7,8 @@ from a MD trajectory
 - Refactored for performance by Gemini
 """
 
-import sys
 import re
+import sys
 import warnings
 
 import MDAnalysis as mda

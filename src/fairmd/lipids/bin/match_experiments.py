@@ -17,9 +17,9 @@ No arguments are needed.
 TODO: check if EXPERIMENT section changed and trigger the action!
 """
 
-import sys
 import logging
 import os
+import sys
 from typing import IO
 
 import yaml

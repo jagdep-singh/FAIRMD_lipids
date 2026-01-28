@@ -7,11 +7,11 @@ Input/Output module with some small usefull functions. It includes:
 - Calculating file hash for fingerprinting.
 """
 
-import sys
 import hashlib
 import logging
 import math
 import os
+import sys
 import time
 from collections.abc import Generator, Mapping
 from contextlib import contextmanager
