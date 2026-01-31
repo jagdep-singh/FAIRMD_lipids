@@ -131,7 +131,6 @@ def download_with_progress_with_retry(
 
     class RetrieveProgressBar(tqdm):
         def __init__(self, *args, **kwargs):
-            kwargs.setdefault("disable", not sys.stdout.isatty())
             super().__init__(*args, **kwargs)
 
         def update_retrieve(self, b=1, bsize=1, tsize=None):
